@@ -41,7 +41,7 @@ public class MTAssetBroswerCell: UICollectionViewCell {
         return scrollView
     }()
     
-    var indicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    var indicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
     
     var tappedHandle: (() -> ())?
     

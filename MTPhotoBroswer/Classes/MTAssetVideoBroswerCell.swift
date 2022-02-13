@@ -27,7 +27,7 @@ public class MTAssetVideoBroswerCell: UICollectionViewCell {
         return button
     }()
     
-    var indicatorView: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    var indicatorView: UIActivityIndicatorView = UIActivityIndicatorView(style: .white)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
