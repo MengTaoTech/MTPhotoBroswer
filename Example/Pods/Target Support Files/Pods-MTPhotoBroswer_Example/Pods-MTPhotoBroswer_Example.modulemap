@@ -1,0 +1,6 @@
+framework module Pods_MTPhotoBroswer_Example {
+  umbrella header "Pods-MTPhotoBroswer_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module MTPhotoBroswer {
+  umbrella header "MTPhotoBroswer-umbrella.h"
+
+  export *
+  module * { export * }
+}
