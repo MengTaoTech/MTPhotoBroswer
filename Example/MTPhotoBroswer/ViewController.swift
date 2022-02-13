@@ -27,7 +27,7 @@ class MTViewController: UIViewController {
         var asset = MTBrowseAsset()
         asset.image = iconVIew.image
         
-        let vc = MTAssetBroswerViewController(url: URL(string: "https://p9-passport.byteacctimg.com/img/user-avatar/03040750b9f8ebe875ca1bc7dcfde68d~300x300.image")!)
+        let vc = MTAssetBroswerViewController(image: iconVIew.image)
         present(vc, animated: true, completion: nil)
         
     }

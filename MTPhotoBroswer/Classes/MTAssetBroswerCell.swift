@@ -131,11 +131,9 @@ public class MTAssetBroswerCell: UICollectionViewCell {
                 
             } else if let imageURL = brosweAsset.imageURL {
                 indicatorView.startAnimating()
-                photoView.kf.setImage(with: imageURL, placeholder: nil, options: nil, progressBlock: nil) { [weak self] (image, error, cacheType, url) in
+                photoView.kf.setImage(with: imageURL) { [weak self] result in
                     self?.photoViewSizeToFit()
                 }
-                
-                
             }
         }
     }

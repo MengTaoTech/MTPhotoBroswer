@@ -1,6 +1,6 @@
 {
   "name": "MTPhotoBroswer",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "summary": "图片放大浏览器",
   "swift_versions": "5.0",
   "description": "支持图片放大查看",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": "https://github.com/MengTaoTech/MTPhotoBroswer.git",
-    "tag": "0.1.2"
+    "tag": "0.1.0"
   },
   "platforms": {
     "ios": "11.0"

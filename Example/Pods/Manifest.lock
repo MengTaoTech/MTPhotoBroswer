@@ -1,9 +1,9 @@
 PODS:
-  - Kingfisher (4.10.1)
-  - MTPhotoBroswer (0.1.2):
+  - Kingfisher (6.3.1)
+  - MTPhotoBroswer (0.1.0):
     - Kingfisher
     - SnapKit
-  - SnapKit (4.2.0)
+  - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - MTPhotoBroswer (from `../`)
@@ -18,9 +18,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
-  MTPhotoBroswer: ed7f0448ddcb55c4519cb75fa04d818616f47f83
-  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
+  MTPhotoBroswer: fd87bed2dd3feaeba2c16e400ad99a99e8231851
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
 PODFILE CHECKSUM: 74cd6aae66ff2710b44880ffdd6b690f050309a2
 
