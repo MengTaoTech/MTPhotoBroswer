@@ -6,8 +6,4 @@ platform :ios, '11.0'
 target 'MTPhotoBroswer_Example' do
   pod 'MTPhotoBroswer', :path => '../'
 
-  target 'MTPhotoBroswer_Tests' do
-    inherit! :search_paths
-
-  end
 end

@@ -1,6 +1,0 @@
-framework module Pods_MTPhotoBroswer_Tests {
-  umbrella header "Pods-MTPhotoBroswer_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}
