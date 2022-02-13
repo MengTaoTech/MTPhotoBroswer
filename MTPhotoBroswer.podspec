@@ -19,11 +19,11 @@ Pod::Spec.new do |s|
 
   s.description      = "支持图片放大查看"
 
-  s.homepage         = 'https://github.com/cycweeds/MTPhotoBroswer'
+  s.homepage         = 'https://github.com/MTPhotoBroswer/MTPhotoBroswer'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'cycweeds' => 'cycweeds@gmail.com' }
-  s.source           = { :git => 'https://github.com/cycweeds/MTPhotoBroswer.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/MTPhotoBroswer/MTPhotoBroswer.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
