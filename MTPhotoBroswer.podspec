@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.name             = 'MTPhotoBroswer'
   s.version          = '0.1.2'
   s.summary          = '图片放大浏览器'
-
+  s.swift_version = '5.0'
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
 #   * Try to keep it short, snappy and to the point.
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'cycweeds' => 'cycweeds@gmail.com' }
   s.source           = { :git => 'https://github.com/MengTaoTech/MTPhotoBroswer.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  # s.social_media_url = 'https://twitter.com/   <TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
 
