@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'MTPhotoBroswerKit'
+  s.name             = 'MTPhotoBroswer'
   s.version          = '0.1.8'
   s.summary          = '图片放大浏览器'
   s.swift_version = '5.0'
@@ -37,4 +37,5 @@ Pod::Spec.new do |s|
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
    s.dependency 'Kingfisher', ">=6.3.1"
+   s.dependency 'SnapKit'
 end
