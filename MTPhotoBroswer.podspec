@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MTPhotoBroswer'
-  s.version          = '0.1.9'
+  s.version          = '0.1.10'
   s.summary          = '图片放大浏览器'
   s.swift_version = '5.0'
 # This description is used to generate tags and improve search results.

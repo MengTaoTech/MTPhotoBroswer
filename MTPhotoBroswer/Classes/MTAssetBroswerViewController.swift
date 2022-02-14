@@ -11,6 +11,7 @@ import Photos
 import SnapKit
 
 
+
 public class MTAssetBroswerViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     lazy private var collectionView: UICollectionView = {
@@ -47,13 +48,14 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         self.init(images: [image])
     }
     
-    public convenience init(images: [UIImage]) {
+    public convenience init(images: [UIImage], index: Int = 0) {
         let assets = images.map { image -> MTBrowseAsset in
             var asset = MTBrowseAsset()
             asset.image = image
             return asset
         }
         self.init(assets: assets)
+        self.currentPage = index
     }
     
     
@@ -69,7 +71,6 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         }
         self.init(assets: assets)
     }
-    
     
     public convenience init(asset: MTBrowseAsset) {
         self.init(assets: [asset])
@@ -89,7 +90,10 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         self.modalPresentationStyle = .overFullScreen
     }
     
-    var originFrame: CGRect?
+    
+    public var currentPage: Int = 0
+    
+//    var originFrame: CGRect?
     
     var shadowView: UIView = {
         let shadowView = UIView()
@@ -145,14 +149,19 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             }
         }
         
+    
         pageControl.numberOfPages = assets.count
+        
+        pageControl.currentPage = currentPage
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.alpha = 0
 //        blurEffectView.effect = nil
+        
     }
+    
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -160,6 +169,8 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
 //            self.blurEffectView.effect = UIBlurEffect(style: .light)
             self.view.alpha = 1
         }
+        
+        collectionView.scrollToItem(at: IndexPath(item: currentPage, section: 0), at: .centeredHorizontally, animated: false)
     }
     
     var dismissHandler: (() -> ())?
@@ -175,8 +186,14 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let index = Int(max(scrollView.contentOffset.x / scrollView.frame.width, 0))
-        pageControl.currentPage = index
+        
+        print(#function)
+//        if scrollView.isTracking || scrollView.isDragging || scrollView.isDecelerating {
+            let index = Int(max(scrollView.contentOffset.x / scrollView.frame.width, 0))
+            pageControl.currentPage = index
+            currentPage = index
+//        }
+        
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

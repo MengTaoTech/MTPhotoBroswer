@@ -20,7 +20,6 @@ public class MTAssetBroswerCell: UICollectionViewCell {
     
     lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(MTAssetBroswerCell.scrowViewDidTapped))
     
-    
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.delegate = self
@@ -82,8 +81,6 @@ public class MTAssetBroswerCell: UICollectionViewCell {
         } else {
             scrollView.setZoomScale(1, animated: true)
         }
-        
-        
     }
     
     public override func prepareForReuse() {
@@ -137,14 +134,10 @@ public class MTAssetBroswerCell: UICollectionViewCell {
             }
         }
     }
-    
-    
-    
 }
 
 extension MTAssetBroswerCell : UIScrollViewDelegate {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.photoView
     }
-    
 }
