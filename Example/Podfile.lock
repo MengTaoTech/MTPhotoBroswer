@@ -1,7 +1,7 @@
 PODS:
   - Kingfisher (6.3.1)
-  - MTPhotoBroswer (0.1.0):
-    - Kingfisher
+  - MTPhotoBroswer (0.1.11):
+    - Kingfisher (>= 5.0)
     - SnapKit
   - SnapKit (5.0.1)
 
@@ -19,7 +19,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
-  MTPhotoBroswer: fd87bed2dd3feaeba2c16e400ad99a99e8231851
+  MTPhotoBroswer: 52e4f88c7559d51f7549f2bad0300b325853955c
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
 PODFILE CHECKSUM: 74cd6aae66ff2710b44880ffdd6b690f050309a2

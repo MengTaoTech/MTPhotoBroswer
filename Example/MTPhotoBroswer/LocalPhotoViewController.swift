@@ -9,7 +9,7 @@
 import UIKit
 import MTPhotoBroswer
 
-class LocaoPhotoViewController: UIViewController {
+class LocalPhotoViewController: UIViewController {
 
     @IBOutlet weak var iconView: UIImageView!
     
