@@ -91,9 +91,9 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     }
     
     
+    /// 当前位置
     public var currentPage: Int = 0
     
-//    var originFrame: CGRect?
     
     var shadowView: UIView = {
         let shadowView = UIView()
