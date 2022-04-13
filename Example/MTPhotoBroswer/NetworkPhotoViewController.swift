@@ -50,8 +50,6 @@ class NetworkPhotoViewController: UIViewController {
         try? ImageCache.default.diskStorage.removeAll()
         ImageCache.default.memoryStorage.removeAll()
         
-        var asset = MTBrowseAsset()
-        asset.image = iconView.image
         
         let vc: MTAssetBroswerViewController
         
@@ -59,9 +57,13 @@ class NetworkPhotoViewController: UIViewController {
             vc = MTAssetBroswerViewController(urls: imageURLs.map { URL(string: $0)!} )
             vc.currentPage = pageSelectControl.selectedSegmentIndex
         } else {
-            vc = MTAssetBroswerViewController(url: URL(string: imageURLs[pageSelectControl.selectedSegmentIndex])!)
+            
+            var asset = MTBrowseAsset()
+            asset.image = iconView.image
+            asset.imageURL = URL(string: imageURLs[pageSelectControl.selectedSegmentIndex])!
+            vc = MTAssetBroswerViewController(asset: asset)
         }
-        
+        vc.presentingImageView = iconView
         present(vc, animated: true, completion: nil)
         
     }
