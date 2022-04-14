@@ -10,7 +10,8 @@ import UIKit
 import Photos
 import SnapKit
 
-fileprivate var MTAssetBroswerAnimateDuration: TimeInterval = 0.3
+/// 动画加载时间
+public var MTAssetBroswerAnimateDuration: TimeInterval = 0.3
 
 public class MTAssetBroswerViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -66,6 +67,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         }
         self.init(assets: assets)
         self.currentPage = index
+        self._initializeCurrentPage = index
     }
     
     
@@ -104,15 +106,17 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     /// 当前位置
     public var currentPage: Int = 0
     
+    var _initializeCurrentPage = 0
+    
     var shadowView: UIView = {
         let shadowView = UIView()
         shadowView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         return shadowView
     }()
     
-//    let blurEffectView = UIVisualEffectView(frame: .zero)
+    //    let blurEffectView = UIVisualEffectView(frame: .zero)
     
-   
+    
     public lazy var backgroundView: UIView = {
         let backgroundView = UIView()
         backgroundView.backgroundColor = .black
@@ -131,27 +135,27 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     func setupUI() {
         
-//        view.addSubview(blurEffectView)
+        //        view.addSubview(blurEffectView)
         view.addSubview(backgroundView)
-
+        
         backgroundView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-//
-//        view.addSubview(shadowView)
-//        shadowView.isUserInteractionEnabled = true
-//        shadowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MTAssetBroswerViewController.close)))
-//        shadowView.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview()
-//        }
+        //
+        //        view.addSubview(shadowView)
+        //        shadowView.isUserInteractionEnabled = true
+        //        shadowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MTAssetBroswerViewController.close)))
+        //        shadowView.snp.makeConstraints { (make) in
+        //            make.edges.equalToSuperview()
+        //        }
         
-//        blurEffectView.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview()
-//        }
+        //        blurEffectView.snp.makeConstraints { (make) in
+        //            make.edges.equalToSuperview()
+        //        }
         
-       
         
-       
+        
+        
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { (make) in
@@ -168,7 +172,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             }
         }
         
-    
+        
         pageControl.numberOfPages = assets.count
         
         pageControl.currentPage = currentPage
@@ -177,13 +181,18 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         if needFakeImageViewAnimateWhenViewDidAppear() {
             if let presentingImageView = presentingImageView, let presentingImage = presentingImageView.image {
                 fakeImageView = UIImageView(image: presentingImage)
-                fakeImageView?.contentMode = .scaleAspectFit
-                fakeImageView?.layer.cornerRadius = presentingImageView.layer.cornerRadius
+                fakeImageView?.clipsToBounds = true
                 view.addSubview(fakeImageView!)
                 
-               
-       
-                fakeImageSizeToFit(presentingImageView: presentingImageView)
+                if presentingImageView.contentMode == .scaleToFill || presentingImageView.contentMode == .scaleAspectFit || presentingImageView.contentMode == .scaleAspectFill {
+                    self.fakeImageView?.frame = self.presentingImageView!.convert(self.presentingImageView!.bounds, to: nil)
+                    fakeImageView?.contentMode = presentingImageView.contentMode
+                } else {
+                    fakeImageSizeToFit(presentingImageView: presentingImageView)
+                }
+                
+                
+                
                 
             }
             collectionView.isHidden = true
@@ -195,9 +204,9 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         backgroundView.alpha = 0
-//        blurEffectView.effect = nil
+        //        blurEffectView.effect = nil
         
-  
+        
         
     }
     
@@ -214,19 +223,22 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         
         switch presentingImageView.contentMode {
             
-        //  通过 Example中的 LocalPhotoViewController 去调试查看
-        
-        // 由于UIImageView 默认是 scaleAspectFit 这个参数
-        // 而 redraw 这个参数并不会改变UIImageView的样式的，默认采用 scaleAspectFit这个参数
-        //  如果用户按照以下顺序设置contentMode     scaleToFill->redraw  （在设置为redraw 之前设置了另外一个不是scaleAspectFit的） 则会出现bug，场景极其之少
+            //  通过 Example中的 LocalPhotoViewController 去调试查看
+            
+            // 由于UIImageView 默认是 scaleAspectFit 这个参数
+            // 而 redraw 这个参数并不会改变UIImageView的样式的，默认采用 scaleAspectFit这个参数
+            //  如果用户按照以下顺序设置contentMode     scaleToFill->redraw  （在设置为redraw 之前设置了另外一个不是scaleAspectFit的） 则会出现bug，场景极其之少
         case .scaleAspectFit, .redraw:
             if scale >= 1 {
                 // 宽大于高
-                let height = presentingFrameInWindow.size.width / scale
-                fakeImageView?.frame = CGRect(x: presentingFrameInWindow.origin.x, y: presentingFrameInWindow.midY - height / 2, width: presentingFrameInWindow.size.width, height: height)
+                let height = min(presentingFrameInWindow.size.width / scale, presentingFrameInWindow.height)
+                
+                fakeImageView?.frame = CGRect(x: 0, y: 0, width: height * scale, height: height)
+                fakeImageView?.center = CGPoint(x: presentingFrameInWindow.midX, y: presentingFrameInWindow.midY)
             } else {
-                let width = presentingFrameInWindow.size.height * scale
-                fakeImageView?.frame = CGRect(x: presentingFrameInWindow.midX - width / 2, y: presentingFrameInWindow.origin.y, width: width, height: presentingFrameInWindow.size.height)
+                let width = min(presentingFrameInWindow.size.height * scale, presentingFrameInWindow.width)
+                fakeImageView?.frame = CGRect(x: 0, y: 0, width: width, height: width / scale)
+                fakeImageView?.center = CGPoint(x: presentingFrameInWindow.midX, y: presentingFrameInWindow.midY)
             }
         case .scaleToFill:
             // 和scaleAspectFill的时候 效果会好看一点
@@ -260,8 +272,8 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-     
         
+        _initializeCurrentPage = currentPage
         collectionView.scrollToItem(at: IndexPath(item: currentPage, section: 0), at: .centeredHorizontally, animated: false)
         
         if needFakeImageViewAnimateWhenViewDidAppear(), let fakeImageView = fakeImageView, let image = fakeImageView.image {
@@ -289,11 +301,11 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
                 self.fakeImageView?.alpha = 0
                 self.collectionView.isHidden = false
             }
-
+            
         } else {
-         
+            
             UIView.animate(withDuration: MTAssetBroswerAnimateDuration) {
-    //            self.blurEffectView.effect = UIBlurEffect(style: .light)
+                //            self.blurEffectView.effect = UIBlurEffect(style: .light)
                 self.view.alpha = 1
             }
         }
@@ -308,30 +320,50 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     @objc func close() {
         
+        
+        if _initializeCurrentPage != currentPage {
+            UIView.animate(withDuration: MTAssetBroswerAnimateDuration, animations: {
+                self.view.alpha = 0
+            }) { (_) in
+                self.dismiss(animated: false, completion: self.dismissHandler)
+            }
+            return
+        }
+        
+        
+    
         collectionView.isHidden = true
         
         if self.needFakeImageViewAnimateWhenViewWillDisAppear() && self.fakeImageView != nil {
-            self.fakeImageView?.alpha = 1
             if let photoImageView = (collectionView.visibleCells.first as? MTAssetBroswerCell)?.photoView {
                 
                 fakeImageView?.frame = photoImageView.convert(photoImageView.bounds, to: nil)
+                fakeImageView?.alpha = 1
                 
             }
         }
+        
         UIView.animate(withDuration: MTAssetBroswerAnimateDuration, animations: {
-//            self.blurEffectView.effect = nil
+            //            self.blurEffectView.effect = nil
             self.backgroundView.alpha = 0
             
-            if self.needFakeImageViewAnimateWhenViewWillDisAppear() && self.fakeImageView != nil && self.presentingImageView != nil {
-//                self.fakeImageView?.frame = self.presentingImageView!.convert(self.presentingImageView!.bounds, to: nil)
-
-                self.fakeImageSizeToFit(presentingImageView: self.presentingImageView!)
-                self.fakeImageView?.layer.cornerRadius = self.presentingImageView!.layer.cornerRadius
-
+            if self.needFakeImageViewAnimateWhenViewWillDisAppear() && self.fakeImageView != nil , let presentingImageView = self.presentingImageView  {
+                if presentingImageView.contentMode == .scaleToFill || presentingImageView.contentMode == .scaleAspectFit || presentingImageView.contentMode == .scaleAspectFill {
+                    self.fakeImageView?.contentMode = self.presentingImageView!.contentMode
+                    
+                    self.fakeImageView?.frame = self.presentingImageView!.convert(self.presentingImageView!.bounds, to: nil)
+                } else {
+                    // 这些的动效会在缩放最后 图片多余部分会直接消失  没有很平滑的动效
+                    self.fakeImageSizeToFit(presentingImageView: self.presentingImageView!)
+                }
+                
+                
+                
             }
         }) { (_) in
             self.dismiss(animated: false, completion: self.dismissHandler)
         }
+        
     }
     
     
@@ -346,9 +378,13 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     }
     
     func needFakeImageViewAnimateWhenViewWillDisAppear() -> Bool {
+        
+     
         if presentingImageView != nil && presentingImageView?.image != nil {
             return true
         }
+        
+        
         
         return false
     }
@@ -356,9 +392,9 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-            let index = Int(max(scrollView.contentOffset.x / scrollView.frame.width, 0))
-            pageControl.currentPage = index
-            currentPage = index
+        let index = Int(max(scrollView.contentOffset.x / scrollView.frame.width, 0))
+        pageControl.currentPage = index
+        currentPage = index
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

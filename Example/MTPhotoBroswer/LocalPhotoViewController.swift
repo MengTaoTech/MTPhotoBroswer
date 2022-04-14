@@ -33,7 +33,8 @@ class LocalPhotoViewController: UIViewController {
     @IBOutlet weak var pageSelectControl: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

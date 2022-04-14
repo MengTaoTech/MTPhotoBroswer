@@ -21,8 +21,11 @@ public enum MTBrowseAssetMediaType : Int {
 
 // 渠道来源
 public struct MTBrowseAsset {
+    /// 图片
     public var image: UIImage?
+    /// image 链接 本地/远程
     public var imageURL: URL?
+    /// video 链接 本地/远程
     public var videoURL: URL?
     
     
@@ -30,6 +33,7 @@ public struct MTBrowseAsset {
         
     }
     
+    /// 资源类型
     public var mediaType: MTBrowseAssetMediaType {
         get {
             if image != nil || imageURL != nil {

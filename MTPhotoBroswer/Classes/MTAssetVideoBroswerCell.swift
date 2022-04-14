@@ -84,7 +84,7 @@ public class MTAssetVideoBroswerCell: UICollectionViewCell {
     }
     
     deinit {
-        print("MTAssetVideoBroswerCell deinit")
+        
     }
     
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
