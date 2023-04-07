@@ -13,7 +13,6 @@ class LocalPhotoViewController: UIViewController {
 
     @IBOutlet weak var iconView: UIImageView! {
         didSet {
-            iconView.layer.cornerRadius = 20
             
         }
     }

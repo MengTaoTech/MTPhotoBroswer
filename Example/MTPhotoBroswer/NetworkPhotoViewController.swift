@@ -54,7 +54,7 @@ class NetworkPhotoViewController: UIViewController {
         let vc: MTAssetBroswerViewController
         
         if supportMutipleSwitch.isOn {
-            vc = MTAssetBroswerViewController(urls: imageURLs.map { URL(string: $0)!} )
+            vc = MTAssetBroswerViewController(imageURLs: imageURLs.map { URL(string: $0)!} )
             vc.currentPage = pageSelectControl.selectedSegmentIndex
         } else {
             

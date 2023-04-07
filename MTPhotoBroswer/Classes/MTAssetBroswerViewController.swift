@@ -11,7 +11,7 @@ import Photos
 import SnapKit
 
 /// 动画加载时间
-public var MTAssetBroswerAnimateDuration: TimeInterval = 0.3
+public var MTAssetBroswerAnimateDuration: TimeInterval = 0.25
 
 public class MTAssetBroswerViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -48,7 +48,6 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     private var fakeImageView: UIImageView?
     
-    
     public var assets: [MTBrowseAsset] = []
     
     public convenience init(image: UIImage) {
@@ -71,12 +70,12 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     }
     
     
-    public convenience init(url: URL) {
-        self.init(urls: [url])
+    public convenience init(imageURL: URL) {
+        self.init(imageURLs: [imageURL])
     }
     
-    public convenience init(urls: [URL]) {
-        let assets = urls.map { url -> MTBrowseAsset in
+    public convenience init(imageURLs: [URL], index: Int = 0) {
+        let assets = imageURLs.map { url -> MTBrowseAsset in
             var asset = MTBrowseAsset()
             asset.imageURL = url
             return asset
@@ -88,9 +87,11 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         self.init(assets: [asset])
     }
     
-    public convenience init(assets: [MTBrowseAsset]) {
+    public convenience init(assets: [MTBrowseAsset], index: Int = 0) {
         self.init()
         self.assets = assets
+        _initializeCurrentPage = index
+        currentPage = index
     }
     
     public override var prefersStatusBarHidden: Bool {
@@ -107,14 +108,6 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     public var currentPage: Int = 0
     
     var _initializeCurrentPage = 0
-    
-    var shadowView: UIView = {
-        let shadowView = UIView()
-        shadowView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        return shadowView
-    }()
-    
-    //    let blurEffectView = UIVisualEffectView(frame: .zero)
     
     
     public lazy var backgroundView: UIView = {
@@ -135,23 +128,12 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     func setupUI() {
         
-        //        view.addSubview(blurEffectView)
         view.addSubview(backgroundView)
         
         backgroundView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        //
-        //        view.addSubview(shadowView)
-        //        shadowView.isUserInteractionEnabled = true
-        //        shadowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(MTAssetBroswerViewController.close)))
-        //        shadowView.snp.makeConstraints { (make) in
-        //            make.edges.equalToSuperview()
-        //        }
-        
-        //        blurEffectView.snp.makeConstraints { (make) in
-        //            make.edges.equalToSuperview()
-        //        }
+
         
         
         
@@ -204,10 +186,6 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         backgroundView.alpha = 0
-        //        blurEffectView.effect = nil
-        
-        
-        
     }
     
     
@@ -306,6 +284,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             
             UIView.animate(withDuration: MTAssetBroswerAnimateDuration) {
                 //            self.blurEffectView.effect = UIBlurEffect(style: .light)
+                self.backgroundView.alpha = 1
                 self.view.alpha = 1
             }
         }
