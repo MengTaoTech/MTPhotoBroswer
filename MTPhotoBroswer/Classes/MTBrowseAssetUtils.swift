@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension UIView {
-    var mt_controller: UIViewController? {
+public extension UIView {
+    public var mt_controller: UIViewController? {
         var next = next
         while next != nil {
             if next is UIViewController {

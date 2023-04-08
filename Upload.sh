@@ -16,4 +16,4 @@ git commit -m "version $versionNumber update"
 git push -f origin master --tags
 
 
- pod trunk push
+ pod trunk push --allow-warnings --verbose

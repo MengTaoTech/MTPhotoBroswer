@@ -28,10 +28,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '11.0'
 
   s.source_files = 'MTPhotoBroswer/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'MTPhotoBroswer' => ['MTPhotoBroswer/Assets/*.png']
-  # }
 
    s.dependency 'Kingfisher'
    s.dependency 'SnapKit'
