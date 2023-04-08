@@ -347,8 +347,8 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     
     func needFakeImageViewAnimateWhenViewDidAppear() -> Bool {
-        if presentingImageView == nil && presentingImageView?.image == nil {
-            return false
+        if presentingImageView?.image != nil {
+            return true
         }
         
         return assets.contains { asset in
