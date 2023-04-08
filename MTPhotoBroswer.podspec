@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MTPhotoBroswer'
-  s.version          = '0.1.13'
+  s.version          = '0.2.0'
   s.summary          = '图片放大浏览器'
   s.swift_version = '5.0'
 # This description is used to generate tags and improve search results.
@@ -20,7 +20,6 @@ Pod::Spec.new do |s|
   s.description      = "支持图片放大查看"
 
   s.homepage         = 'https://github.com/MengTaoTech/MTPhotoBroswer'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'cycweeds' => 'cycweeds@gmail.com' }
   s.source           = { :git => 'https://github.com/MengTaoTech/MTPhotoBroswer.git', :tag => s.version.to_s }
@@ -34,8 +33,6 @@ Pod::Spec.new do |s|
   #   'MTPhotoBroswer' => ['MTPhotoBroswer/Assets/*.png']
   # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
    s.dependency 'Kingfisher'
    s.dependency 'SnapKit'
 end

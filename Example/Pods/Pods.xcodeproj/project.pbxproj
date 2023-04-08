@@ -13,6 +13,7 @@
 		026D2A43CE05B83568AD0C0A27BE7016 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FCADE986655AEC918DCF852AA223049 /* ImageProcessor.swift */; };
 		02D728C97AA23F2F5E00FCF14E27ADCB /* ImageDownloaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9128B6619885FA88C0E3D1CF7317E222 /* ImageDownloaderDelegate.swift */; };
 		0932EDB5743F9EAA4A713E5BE9B9BFD0 /* ConstraintMakerExtendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F118D0844391E4575B0D6BE51369987 /* ConstraintMakerExtendable.swift */; };
+		095ABEA729E1957200540E38 /* MTBrowseAssetUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095ABEA629E1957200540E38 /* MTBrowseAssetUtils.swift */; };
 		0C1871C6EF1597A99AD1F06F9524A776 /* ConstraintLayoutGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901A11059063A0E4AEA45C82DA121403 /* ConstraintLayoutGuide.swift */; };
 		0F468F5F8AEF272E2B9CA50374007B70 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4207BEE6DFA63E5CF69828DD467E9674 /* Foundation.framework */; };
 		17478E54C6BBAF4457E68255F8AF9438 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1213B667921A324F25F426EFD6518986 /* Storage.swift */; };
@@ -163,6 +164,7 @@
 		0339F9621EA67D2C512A5DF05CAF87D4 /* Kingfisher-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Kingfisher-Info.plist"; sourceTree = "<group>"; };
 		0796242603EC5E11E8FB9C98BB0B5AAB /* MTPhotoBroswer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MTPhotoBroswer.release.xcconfig; sourceTree = "<group>"; };
 		084DC87DD6C96C5DA5A14C9C5818F164 /* Source.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Source.swift; path = Sources/General/ImageSource/Source.swift; sourceTree = "<group>"; };
+		095ABEA629E1957200540E38 /* MTBrowseAssetUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTBrowseAssetUtils.swift; sourceTree = "<group>"; };
 		0D1E5749C556B5FF40C28B8990CBA84C /* AuthenticationChallengeResponsable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthenticationChallengeResponsable.swift; path = Sources/Networking/AuthenticationChallengeResponsable.swift; sourceTree = "<group>"; };
 		0D928142B4D1C2F85B881EE3E377CFE2 /* KingfisherManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KingfisherManager.swift; path = Sources/General/KingfisherManager.swift; sourceTree = "<group>"; };
 		0F118D0844391E4575B0D6BE51369987 /* ConstraintMakerExtendable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerExtendable.swift; path = Source/ConstraintMakerExtendable.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				E01BB044CC64A631CB6E8F9B5702A223 /* MTAssetBroswerViewController.swift */,
 				C08D475E3DCFD5285B9F386ECC686BD1 /* MTAssetVideoBroswerCell.swift */,
 				A9BDBE8A64A7386B5976F5A17EB976BA /* MTBrowseAsset.swift */,
+				095ABEA629E1957200540E38 /* MTBrowseAssetUtils.swift */,
 				B276094BAE49A9E46927B0B7C62F9F5B /* Pod */,
 				04A2E45CE19E5CFB75B5F83405AE9B96 /* Support Files */,
 			);
@@ -887,6 +890,7 @@
 				4296FDB8CF1B207EDCF6C27EB5E3DA53 /* MTAssetBroswerCell.swift in Sources */,
 				D7FEADF7C18BD366378B16E1B9756102 /* MTAssetBroswerViewController.swift in Sources */,
 				5015619F7A2B0C739A3F55D4837CEA30 /* MTAssetVideoBroswerCell.swift in Sources */,
+				095ABEA729E1957200540E38 /* MTBrowseAssetUtils.swift in Sources */,
 				E33629DED147E289291B3BC52FA9D7CD /* MTBrowseAsset.swift in Sources */,
 				BF99F8921B5E61BA9EBFA64715ADDAFA /* MTPhotoBroswer-dummy.m in Sources */,
 			);

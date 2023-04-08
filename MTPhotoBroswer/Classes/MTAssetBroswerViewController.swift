@@ -33,22 +33,23 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         // register
         collectionView.register(MTAssetBroswerCell.self, forCellWithReuseIdentifier: "MTAssetBroswerCell")
         collectionView.register(MTAssetVideoBroswerCell.self, forCellWithReuseIdentifier: "MTAssetVideoBroswerCell")
-        
         return collectionView
     }()
+
+    
+    /// 用户点击的视图
+    public var presentingImageView: UIImageView?
+    
+    
+    public var assets: [MTBrowseAsset] = []
+    
+    private var fakeImageView: UIImageView?
     
     private var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.hidesForSinglePage = true
         return pageControl
     }()
-    
-    /// 用户点击的视图
-    public var presentingImageView: UIImageView?
-    
-    private var fakeImageView: UIImageView?
-    
-    public var assets: [MTBrowseAsset] = []
     
     public convenience init(image: UIImage) {
         self.init(images: [image])
@@ -64,9 +65,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             asset.image = image
             return asset
         }
-        self.init(assets: assets)
-        self.currentPage = index
-        self._initializeCurrentPage = index
+        self.init(assets: assets, index: index)
     }
     
     
@@ -80,7 +79,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             asset.imageURL = url
             return asset
         }
-        self.init(assets: assets)
+        self.init(assets: assets, index: index)
     }
     
     public convenience init(asset: MTBrowseAsset) {
@@ -127,15 +126,11 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     }
     
     func setupUI() {
-        
         view.addSubview(backgroundView)
-        
         backgroundView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
-        
-        
         
         
         
@@ -153,14 +148,11 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
                 make.bottom.equalToSuperview().offset(-20)
             }
         }
-        
-        
         pageControl.numberOfPages = assets.count
-        
         pageControl.currentPage = currentPage
         
         
-        if needFakeImageViewAnimateWhenViewDidAppear() {
+        if needFakeImageViewAnimate() {
             if let presentingImageView = presentingImageView, let presentingImage = presentingImageView.image {
                 fakeImageView = UIImageView(image: presentingImage)
                 fakeImageView?.clipsToBounds = true
@@ -172,10 +164,6 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
                 } else {
                     fakeImageSizeToFit(presentingImageView: presentingImageView)
                 }
-                
-                
-                
-                
             }
             collectionView.isHidden = true
         }
@@ -254,7 +242,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
         _initializeCurrentPage = currentPage
         collectionView.scrollToItem(at: IndexPath(item: currentPage, section: 0), at: .centeredHorizontally, animated: false)
         
-        if needFakeImageViewAnimateWhenViewDidAppear(), let fakeImageView = fakeImageView, let image = fakeImageView.image {
+        if needFakeImageViewAnimate(), let fakeImageView = fakeImageView, let image = fakeImageView.image {
             
             
             let screenWidth = UIScreen.main.bounds.width
@@ -278,14 +266,16 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             } completion: { _ in
                 self.fakeImageView?.alpha = 0
                 self.collectionView.isHidden = false
+                self.presentingImageView?.alpha = 0
             }
             
         } else {
             
             UIView.animate(withDuration: MTAssetBroswerAnimateDuration) {
-                //            self.blurEffectView.effect = UIBlurEffect(style: .light)
                 self.backgroundView.alpha = 1
                 self.view.alpha = 1
+            } completion: { _ in
+                self.presentingImageView?.alpha = 0
             }
         }
     }
@@ -297,13 +287,16 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     var dismissHandler: (() -> ())?
     
-    @objc func close() {
+    @objc func close(dragCell: MTAssetBroswerCell? = nil) {
         
         
         if _initializeCurrentPage != currentPage {
+            
             UIView.animate(withDuration: MTAssetBroswerAnimateDuration, animations: {
                 self.view.alpha = 0
+                self.presentingImageView?.alpha = 1
             }) { (_) in
+                
                 self.dismiss(animated: false, completion: self.dismissHandler)
             }
             return
@@ -313,20 +306,21 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
         collectionView.isHidden = true
         
-        if self.needFakeImageViewAnimateWhenViewWillDisAppear() && self.fakeImageView != nil {
-            if let photoImageView = (collectionView.visibleCells.first as? MTAssetBroswerCell)?.photoView {
-                
-                fakeImageView?.frame = photoImageView.convert(photoImageView.bounds, to: nil)
-                fakeImageView?.alpha = 1
-                
+        if self.needFakeImageViewAnimate() && self.fakeImageView != nil {
+            if let cell = dragCell ?? (collectionView.visibleCells.first as? MTAssetBroswerCell) {
+                let photoImageView = cell.photoView
+                    
+                    fakeImageView?.frame = photoImageView.convert(photoImageView.bounds, to: nil)
+                    fakeImageView?.alpha = 1
+
             }
+           
         }
         
         UIView.animate(withDuration: MTAssetBroswerAnimateDuration, animations: {
-            //            self.blurEffectView.effect = nil
             self.backgroundView.alpha = 0
             
-            if self.needFakeImageViewAnimateWhenViewWillDisAppear() && self.fakeImageView != nil , let presentingImageView = self.presentingImageView  {
+            if self.needFakeImageViewAnimate() && self.fakeImageView != nil , let presentingImageView = self.presentingImageView  {
                 if presentingImageView.contentMode == .scaleToFill || presentingImageView.contentMode == .scaleAspectFit || presentingImageView.contentMode == .scaleAspectFill {
                     self.fakeImageView?.contentMode = self.presentingImageView!.contentMode
                     
@@ -335,42 +329,27 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
                     // 这些的动效会在缩放最后 图片多余部分会直接消失  没有很平滑的动效
                     self.fakeImageSizeToFit(presentingImageView: self.presentingImageView!)
                 }
-                
-                
-                
             }
         }) { (_) in
+            self.presentingImageView?.alpha = 1
+
             self.dismiss(animated: false, completion: self.dismissHandler)
         }
-        
     }
     
-    
-    func needFakeImageViewAnimateWhenViewDidAppear() -> Bool {
+    func needFakeImageViewAnimate() -> Bool {
         if presentingImageView?.image != nil {
             return true
         }
         
-        return assets.contains { asset in
-            return asset.image != nil
-        }
-    }
-    
-    func needFakeImageViewAnimateWhenViewWillDisAppear() -> Bool {
-        
-     
-        if presentingImageView != nil && presentingImageView?.image != nil {
-            return true
-        }
-        
-        
-        
         return false
     }
+
+    
+    
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         let index = Int(max(scrollView.contentOffset.x / scrollView.frame.width, 0))
         pageControl.currentPage = index
         currentPage = index
@@ -396,9 +375,10 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
             
             return videoCell
         case .unknown:
-            fatalError("Don't match any style cell")
+            fatalError("Don't match any cell")
         }
     }
+    
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

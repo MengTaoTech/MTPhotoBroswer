@@ -36,7 +36,14 @@ class NetworkPhotoViewController: UIViewController {
     @IBOutlet weak var pageSelectControl: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        try? ImageCache.default.diskStorage.removeAll()
+        ImageCache.default.memoryStorage.removeAll()
+        print("页面加载 会清除一下缓存")
+        
         iconView.kf.setImage(with: URL(string: imageURLs[0]))
+        
+        
         
     }
 
@@ -47,8 +54,6 @@ class NetworkPhotoViewController: UIViewController {
     
 
     @IBAction func iconViewTapped(_ sender: Any) {
-        try? ImageCache.default.diskStorage.removeAll()
-        ImageCache.default.memoryStorage.removeAll()
         
         
         let vc: MTAssetBroswerViewController
@@ -58,13 +63,11 @@ class NetworkPhotoViewController: UIViewController {
             vc.currentPage = pageSelectControl.selectedSegmentIndex
         } else {
             
-            var asset = MTBrowseAsset()
-            asset.image = iconView.image
-            asset.imageURL = URL(string: imageURLs[pageSelectControl.selectedSegmentIndex])!
-            vc = MTAssetBroswerViewController(asset: asset)
+        
+            vc = MTAssetBroswerViewController(imageURLs: imageURLs.map { return URL(string: $0)! }, index: pageSelectControl.selectedSegmentIndex)
         }
         vc.presentingImageView = iconView
-        present(vc, animated: true, completion: nil)
+        present(vc, animated: false, completion: nil)
         
     }
     @IBAction func pageSelectControlValueChanged(_ sender: UISwitch) {

@@ -27,10 +27,10 @@ public class MTAssetBroswerCell: UICollectionViewCell {
         scrollView.clipsToBounds = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.alwaysBounceHorizontal = true
+        scrollView.alwaysBounceVertical = true
         scrollView.addGestureRecognizer(tapGesture)
-        if #available(iOS 11.0, *) {
-            scrollView.contentInsetAdjustmentBehavior = .never
-        }
+        scrollView.contentInsetAdjustmentBehavior = .never
         
         tapGesture.require(toFail: scrollView.panGestureRecognizer)
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(MTAssetBroswerCell.scrowViewDidDoubleTapped))
@@ -49,6 +49,8 @@ public class MTAssetBroswerCell: UICollectionViewCell {
         contentView.addSubview(scrollView)
         scrollView.addSubview(photoView)
         contentView.addSubview(indicatorView)
+        clipsToBounds = true
+        
         
         indicatorView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -68,7 +70,6 @@ public class MTAssetBroswerCell: UICollectionViewCell {
         if photoView.image == nil {
             return
         }
-        
         var zoomScale = scrollView.zoomScale
         if zoomScale == 1.0 {
             zoomScale = (zoomScale == 1.0) ? 3.0 : 1.0
@@ -109,10 +110,7 @@ public class MTAssetBroswerCell: UICollectionViewCell {
             scrollView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: min(UIScreen.main.bounds.height, photoHeight))
             scrollView.center = CGPoint(x: screenWidth / 2, y: screenHeight / 2)
         }
-        
         photoView.frame = CGRect(origin: .zero, size: scrollView.contentSize)
-        
-        
     }
     
     
@@ -120,12 +118,9 @@ public class MTAssetBroswerCell: UICollectionViewCell {
     var brosweAsset: MTBrowseAsset? {
         didSet {
             guard let brosweAsset = brosweAsset else { return }
-            
             if let image = brosweAsset.image {
                 self.photoView.image = image
                 self.photoViewSizeToFit()
-                
-                
             } else if let imageURL = brosweAsset.imageURL {
                 indicatorView.startAnimating()
                 photoView.kf.setImage(with: imageURL) { [weak self] result in
@@ -134,10 +129,41 @@ public class MTAssetBroswerCell: UICollectionViewCell {
             }
         }
     }
+    
+    var startPoint: CGPoint?
 }
 
 extension MTAssetBroswerCell : UIScrollViewDelegate {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.photoView
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.isDragging {
+            print("捏合状态是否：")
+            print(scrollView.pinchGestureRecognizer?.state == .changed)
+            let gesturePoint = scrollView.panGestureRecognizer.location(in: nil)
+            let scale = 1 - min(1, abs(gesturePoint.y - startPoint!.y) / 200) / scrollView.zoomScale
+            (mt_controller as? MTAssetBroswerViewController)?.backgroundView.alpha = scale
+//            self.transform = .init(scaleX: max(0.2, scale), y: max(0.2, scale))
+        }
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        startPoint = scrollView.panGestureRecognizer.location(in: nil)
+        
+    }
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let gesturePoint = scrollView.panGestureRecognizer.location(in: nil)
+        let scale = 1 - min(1, abs(gesturePoint.y - startPoint!.y) / 200) / scrollView.zoomScale
+        let vc = (mt_controller as? MTAssetBroswerViewController)
+        if scale <= 0.6  {
+            vc?.close(dragCell: self)
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                scrollView.panGestureRecognizer.view?.transform = CGAffineTransform.identity
+                vc?.backgroundView.alpha = 1
+            }
+        }
     }
 }
