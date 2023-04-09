@@ -157,7 +157,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
                 fakeImageView = UIImageView(image: presentingImage)
                 fakeImageView?.clipsToBounds = true
                 view.addSubview(fakeImageView!)
-                
+                assets[currentPage].image = presentingImage
                 if presentingImageView.contentMode == .scaleToFill || presentingImageView.contentMode == .scaleAspectFit || presentingImageView.contentMode == .scaleAspectFill {
                     self.fakeImageView?.frame = self.presentingImageView!.convert(self.presentingImageView!.bounds, to: nil)
                     fakeImageView?.contentMode = presentingImageView.contentMode
@@ -350,7 +350,7 @@ public class MTAssetBroswerViewController: UIViewController, UICollectionViewDel
     
     // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let index = Int(max(scrollView.contentOffset.x / scrollView.frame.width, 0))
+        let index = Int(max((scrollView.contentOffset.x / scrollView.frame.width).rounded(), 0))
         pageControl.currentPage = index
         currentPage = index
     }

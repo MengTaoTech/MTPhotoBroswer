@@ -121,7 +121,8 @@ public class MTAssetBroswerCell: UICollectionViewCell {
             if let image = brosweAsset.image {
                 self.photoView.image = image
                 self.photoViewSizeToFit()
-            } else if let imageURL = brosweAsset.imageURL {
+            }
+            if let imageURL = brosweAsset.imageURL {
                 indicatorView.startAnimating()
                 photoView.kf.setImage(with: imageURL) { [weak self] result in
                     self?.photoViewSizeToFit()
