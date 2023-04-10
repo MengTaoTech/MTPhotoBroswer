@@ -21,13 +21,6 @@ vc.presentingImageView = imageView
 present(vc, animated: false, completion: nil)
 
 
-// 多图
-let vc = MTAssetBroswerViewController(images: [images])
-// let vc = MTAssetBroswerViewController(urls: [imageurls])
-// 设置当前查看的位置
-vc.currentPage = 2
-present(vc, animated: false, completion: nil)
-
 
 ```
 
@@ -36,8 +29,8 @@ present(vc, animated: false, completion: nil)
 
 
 ## **Requirements**
-iOS 11.0+  
-Swift 4.0+
+iOS 12.4+  
+Swift 5.0+
 
 
 ## **Dependency**
